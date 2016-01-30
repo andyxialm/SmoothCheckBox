@@ -12,11 +12,11 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        final SmoothCheckBox mcb = (SmoothCheckBox) findViewById(R.id.mcb);
-        mcb.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
+        final SmoothCheckBox scb = (SmoothCheckBox) findViewById(R.id.scb);
+        scb.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
-                Log.d("MellowCheckBox", String.valueOf(isChecked));
+                Log.d("SmoothCheckBox", String.valueOf(isChecked));
             }
         });
     }

@@ -45,6 +45,7 @@ public class SmoothCheckBox extends View implements Checkable {
     private static final int COLOR_UNCHECKED = Color.WHITE;
     private static final int COLOR_CHECKED   = Color.parseColor("#FB4846");
     private static final int COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF");
+    private static final int DEF_DRAW_SIZE     = 25;
     private static final int DEF_ANIM_DURATION = 300;
 
     private Paint mPaint, mTickPaint, mFloorPaint;
@@ -196,6 +197,30 @@ public class SmoothCheckBox extends View implements Checkable {
         mScaleVal = isChecked() ? 0f : 1.0f;
         mFloorColor = isChecked() ? mCheckedColor : mFloorUnCheckedColor;
         mDrewDistance = isChecked() ? (mLeftLineDistance + mRightLineDistance) : 0;
+    }
+
+    private int measureSize(int measureSpec) {
+        int defSize = CompatUtils.dp2px(getContext(), DEF_DRAW_SIZE);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        int specMode = MeasureSpec.getMode(measureSpec);
+
+        int result = 0;
+        switch (specMode) {
+            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.AT_MOST:
+                result = Math.min(defSize, specSize);
+                break;
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
+        }
+        return result;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(measureSize(widthMeasureSpec), measureSize(heightMeasureSpec));
     }
 
     @Override
