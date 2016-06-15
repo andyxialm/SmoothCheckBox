@@ -18,7 +18,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        app:color_checked="@color/colorAccent" />
+        android:paddingTop="10dp"
+        app:color_checked="@color/colorAccent"/>
 
     <cn.refactor.library.SmoothCheckBox
         android:layout_width="40dp"
@@ -30,6 +31,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="5dp"
+        android:paddingBottom="10dp"
         app:color_checked="#149A45" />
 
     <cn.refactor.library.SmoothCheckBox

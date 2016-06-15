@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import cn.refactor.library.SmoothCheckBox;
 
 public class SampleListViewActivity extends AppCompatActivity {
-    private ArrayList<Bean> mList = new ArrayList<Bean>();
+    private ArrayList<Bean> mList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,3 +1,19 @@
+/**
+ *  * Copyright 2016 andy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.refactor.library;
 
 import android.animation.ValueAnimator;
@@ -17,34 +33,22 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Checkable;
 
-/*
- * Copyright 2015, 2016 andy
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
- * 作者 : andy
- * 日期 : 16/1/21 11:28
- * 邮箱 : andyxialm@gmail.com
- * 描述 : 有切换动画的CheckBox, 啾啾啾啾~
+/**
+ * Author : andy
+ * Date   : 16/1/21 11:28
+ * Email  : andyxialm@gmail.com
+ * Github : github.com/andyxialm
+ * Description : A custom CheckBox with animation for Android
  */
 
 public class SmoothCheckBox extends View implements Checkable {
     private static final String KEY_INSTANCE_STATE = "InstanceState";
+
     private static final int COLOR_TICK      = Color.WHITE;
     private static final int COLOR_UNCHECKED = Color.WHITE;
     private static final int COLOR_CHECKED   = Color.parseColor("#FB4846");
     private static final int COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF");
+
     private static final int DEF_DRAW_SIZE     = 25;
     private static final int DEF_ANIM_DURATION = 300;
 
@@ -52,10 +56,12 @@ public class SmoothCheckBox extends View implements Checkable {
     private Point[] mTickPoints;
     private Point mCenterPoint;
     private Path mTickPath;
+
     private float mLeftLineDistance, mRightLineDistance, mDrewDistance;
     private float mScaleVal = 1.0f, mFloorScale = 1.0f;
     private int mWidth, mAnimDuration, mStrokeWidth;
     private int mCheckedColor, mUnCheckedColor, mFloorColor, mFloorUnCheckedColor;
+
     private boolean mChecked;
     private boolean mTickDrawing;
     private OnCheckedChangeListener mListener;
@@ -87,8 +93,7 @@ public class SmoothCheckBox extends View implements Checkable {
         mFloorColor = ta.getColor(R.styleable.SmoothCheckBox_color_unchecked_stroke, COLOR_FLOOR_UNCHECKED);
         mCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_checked, COLOR_CHECKED);
         mUnCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_unchecked, COLOR_UNCHECKED);
-        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.SmoothCheckBox_stroke_width,
-                CompatUtils.dp2px(getContext(), 0));
+        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.SmoothCheckBox_stroke_width, CompatUtils.dp2px(getContext(), 0));
         ta.recycle();
 
         mFloorUnCheckedColor = mFloorColor;
@@ -168,7 +173,7 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     /**
-     * <p>checked with animation</p>
+     * checked with animation
      * @param checked checked
      * @param animate change with animation
      */
@@ -361,7 +366,7 @@ public class SmoothCheckBox extends View implements Checkable {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mScaleVal = (float) animation.getAnimatedValue();
-                mFloorColor = getGradientColor(mCheckedColor, COLOR_FLOOR_UNCHECKED, mScaleVal);
+                mFloorColor = getGradientColor(mCheckedColor, mFloorUnCheckedColor, mScaleVal);
                 postInvalidate();
             }
         });
