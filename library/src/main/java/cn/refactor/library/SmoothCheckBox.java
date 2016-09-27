@@ -1,12 +1,12 @@
 /**
- *  * Copyright 2016 andy
- *
+ * * Copyright 2016 andy
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,18 +44,19 @@ import android.widget.Checkable;
 public class SmoothCheckBox extends View implements Checkable {
     private static final String KEY_INSTANCE_STATE = "InstanceState";
 
-    private static final int COLOR_TICK      = Color.WHITE;
+    private static final int COLOR_TICK = Color.WHITE;
     private static final int COLOR_UNCHECKED = Color.WHITE;
-    private static final int COLOR_CHECKED   = Color.parseColor("#FB4846");
+    private static final int COLOR_CHECKED = Color.parseColor("#FB4846");
     private static final int COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF");
 
-    private static final int DEF_DRAW_SIZE     = 25;
+    private static final int DEF_DRAW_SIZE = 25;
     private static final int DEF_ANIM_DURATION = 300;
 
     private Paint mPaint, mTickPaint, mFloorPaint;
     private Point[] mTickPoints;
     private Point mCenterPoint;
     private Path mTickPath;
+
 
     private float mLeftLineDistance, mRightLineDistance, mDrewDistance;
     private float mScaleVal = 1.0f, mFloorScale = 1.0f;
@@ -396,18 +397,21 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     private static int getGradientColor(int startColor, int endColor, float percent) {
-        int sr = (startColor & 0xff0000) >> 0x10;
-        int sg = (startColor & 0xff00) >> 0x8;
-        int sb = (startColor & 0xff);
+        int startA = Color.alpha(startColor);
+        int startR = Color.red(startColor);
+        int startG = Color.green(startColor);
+        int startB = Color.blue(startColor);
 
-        int er = (endColor & 0xff0000) >> 0x10;
-        int eg = (endColor & 0xff00) >> 0x8;
-        int eb = (endColor & 0xff);
+        int endA = Color.alpha(endColor);
+        int endR = Color.red(endColor);
+        int endG = Color.green(endColor);
+        int endB = Color.blue(endColor);
 
-        int cr = (int) (sr * (1 - percent) + er * percent);
-        int cg = (int) (sg * (1 - percent) + eg * percent);
-        int cb = (int) (sb * (1 - percent) + eb * percent);
-        return Color.argb(0xff, cr, cg, cb);
+        int currentA = (int) (startA * (1 - percent) + endA * percent);
+        int currentR = (int) (startR * (1 - percent) + endR * percent);
+        int currentG = (int) (startG * (1 - percent) + endG * percent);
+        int currentB = (int) (startB * (1 - percent) + endB * percent);
+        return Color.argb(currentA, currentR, currentG, currentB);
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {
