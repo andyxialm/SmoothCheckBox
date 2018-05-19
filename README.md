@@ -15,6 +15,37 @@
 |color_unchecked_stroke|color|未选中时边框颜色|
 
 
+## Install (Android Studio 3.1.2)
+
+1. Select `File` > `Project Structure...`
+
+2. Click the green `+` icon (top left) 
+
+ **or** Press **ALT+INSERT** to open the "new module dialog.
+
+3. Select `Import Gradle Project`
+
+4. Select the directory where you download and unzipped the project. 
+
+ **or** 
+ - git clone https://github.com/andyxialm/SmoothCheckBox.git
+ - specifically `SmoothCheckBox`
+
+5. The dialog will present two modules `:library` and `:sample`, check `:library` checkbox. Then choose `Finish`.
+
+6. Open your projects `settings.gradle(Project Settings)` file. Add a new line `:library`
+
+7. Open `build.gradle(Module:app)` in the 
+
+```
+dependencies {  
+		...
+		implementation project(':library')
+}
+```
+8. Gradle `sync` your project, to complete the changes.
+
+
 ## Sample Usage 使用
 
 
