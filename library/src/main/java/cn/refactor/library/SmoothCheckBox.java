@@ -16,6 +16,8 @@
 
 package cn.refactor.library;
 
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -175,6 +177,7 @@ public class SmoothCheckBox extends View implements Checkable {
 
     /**
      * checked with animation
+     *
      * @param checked checked
      * @param animate change with animation
      */
@@ -331,6 +334,7 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     private void startCheckedAnimation() {
+        AnimatorSet animatorSet = new AnimatorSet();
         ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 0f);
         animator.setDuration(mAnimDuration / 3 * 2);
         animator.setInterpolator(new LinearInterpolator());
@@ -338,11 +342,9 @@ public class SmoothCheckBox extends View implements Checkable {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mScaleVal = (float) animation.getAnimatedValue();
-                mFloorColor = getGradientColor(mUnCheckedColor, mCheckedColor, 1 - mScaleVal);
                 postInvalidate();
             }
         });
-        animator.start();
 
         ValueAnimator floorAnimator = ValueAnimator.ofFloat(1.0f, 0.8f, 1.0f);
         floorAnimator.setDuration(mAnimDuration);
@@ -354,12 +356,14 @@ public class SmoothCheckBox extends View implements Checkable {
                 postInvalidate();
             }
         });
-        floorAnimator.start();
-
+        ValueAnimator colorAnimator = animateColor(mUnCheckedColor, mCheckedColor, mAnimDuration / 3 * 2);
+        animatorSet.play(animator).with(floorAnimator).with(colorAnimator);
+        animatorSet.start();
         drawTickDelayed();
     }
 
     private void startUnCheckedAnimation() {
+        AnimatorSet animatorSet = new AnimatorSet();
         ValueAnimator animator = ValueAnimator.ofFloat(0f, 1.0f);
         animator.setDuration(mAnimDuration);
         animator.setInterpolator(new LinearInterpolator());
@@ -367,12 +371,9 @@ public class SmoothCheckBox extends View implements Checkable {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mScaleVal = (float) animation.getAnimatedValue();
-                mFloorColor = getGradientColor(mCheckedColor, mFloorUnCheckedColor, mScaleVal);
                 postInvalidate();
             }
         });
-        animator.start();
-
         ValueAnimator floorAnimator = ValueAnimator.ofFloat(1.0f, 0.8f, 1.0f);
         floorAnimator.setDuration(mAnimDuration);
         floorAnimator.setInterpolator(new LinearInterpolator());
@@ -383,7 +384,9 @@ public class SmoothCheckBox extends View implements Checkable {
                 postInvalidate();
             }
         });
-        floorAnimator.start();
+        ValueAnimator colorAnimator = animateColor(mCheckedColor, mFloorUnCheckedColor, mAnimDuration);
+        animatorSet.play(animator).with(floorAnimator).with(colorAnimator);
+        animatorSet.start();
     }
 
     private void drawTickDelayed() {
@@ -396,22 +399,21 @@ public class SmoothCheckBox extends View implements Checkable {
         }, mAnimDuration);
     }
 
-    private static int getGradientColor(int startColor, int endColor, float percent) {
-        int startA = Color.alpha(startColor);
-        int startR = Color.red(startColor);
-        int startG = Color.green(startColor);
-        int startB = Color.blue(startColor);
-
-        int endA = Color.alpha(endColor);
-        int endR = Color.red(endColor);
-        int endG = Color.green(endColor);
-        int endB = Color.blue(endColor);
-
-        int currentA = (int) (startA * (1 - percent) + endA * percent);
-        int currentR = (int) (startR * (1 - percent) + endR * percent);
-        int currentG = (int) (startG * (1 - percent) + endG * percent);
-        int currentB = (int) (startB * (1 - percent) + endB * percent);
-        return Color.argb(currentA, currentR, currentG, currentB);
+    public ValueAnimator animateColor(int fromColor, int toColor, int duration) {
+        ValueAnimator valueAnimator;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            valueAnimator = ValueAnimator.ofArgb(fromColor, toColor);
+        } else {
+            valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), fromColor, toColor);
+        }
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                mFloorColor = (int) valueAnimator.getAnimatedValue();
+            }
+        });
+        valueAnimator.setDuration(duration);
+        return valueAnimator;
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {
